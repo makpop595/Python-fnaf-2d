@@ -6,7 +6,7 @@ from sys import exit
 import pygame
 
 pygame.init()
-screen = pygame.display.set_mode((1800, 900), pygame.RESIZABLE)
+screen = pygame.display.set_mode((1800, 900))
 pygame.display.set_caption("fnaf BETA bild")
 clock = pygame.time.Clock()
 
@@ -177,16 +177,21 @@ while True:
 
     for event in pygame.event.get():
 
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_q:
+                left_door_dark.fill("#000000")
+
+
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                print("testttttt")
-                if distance == 1 or distance == 2:
+                if distance == 0 or distance == 1:
                     left_door_dark.fill("#4a1d9b")
+                    power_percentage -= 0.001
                 else:
                     left_door_dark.fill("#FFFFFF")
-            else:
-                left_door_dark.fill("#000000")
-                print("test")
+                    power_percentage -= 0.001
+
             if active_mode == ActiveMode.CAMERAS or ActiveMode.Vent_cameras:
 
                 if event.key == pygame.K_v and active_mode == ActiveMode.CAMERAS or active_mode == ActiveMode.Vent_cameras:
@@ -225,7 +230,7 @@ while True:
                 elif active_mode == ActiveMode.Vent_cameras:
                     active_mode = ActiveMode.NORMAL
                     Vent_seen_last = True
-                    print(Test)
+
 
 
 
