@@ -15,9 +15,13 @@ font = pygame.font.Font(None, 50)
 # numbers states
 power_percentage = 100
 time1 = 1
-distance = 2
+bonnie_distance = 2
 night_Bonnie_AI_value = 18
 bonnie_movement_timer = 0
+
+Chica_distance = 2
+night_Chica_AI_value = 18
+Chica_movement_timer = 0
 
 # doors state
 left_door_y = 200
@@ -77,12 +81,12 @@ def d(message, pos):
 
 
 def move_bonnie():
-    global distance, active_mode, bonnie_movement_timer
+    global bonnie_distance, active_mode, bonnie_movement_timer
     current_time = pygame.time.get_ticks()
 
-    if distance == 0 and left_door_open:
+    if bonnie_distance == 0 and left_door_open:
         if current_time - bonnie_movement_timer >= 3000:
-            if distance == 0 and left_door_open:
+            if bonnie_distance == 0 and left_door_open:
                 # Reset the movement timer
                 bonnie_movement_timer = current_time
                 # Set active mode to death screen if distance reaches 0 or goes negative and the left door is open
@@ -101,11 +105,41 @@ def move_bonnie():
             # Adjust distance and active_mode based on AI behavior and game state
             m_op = random.randint(1, 20)  # Random number for AI behavior
             if m_op < night_Bonnie_AI_value:
-                distance -= 1  # Reduce distance if the AI decides to move closer
+                bonnie_distance-= 1  # Reduce distance if the AI decides to move closer
 
-        elif distance == -1:
-            distance = 6
+        elif bonnie_distance == -1:
+            bonnie_distance = 6
 
+def move_Chica():
+    global Chica_distance, active_mode, Chica_movement_timer
+    current_time = pygame.time.get_ticks()
+
+    if Chica_distance == 0 and left_door_open:
+        if current_time - Chica_movement_timer >= 3000:
+            if Chica_distance == 0 and left_door_open:
+                # Reset the movement timer
+                Chica_movement_timer = current_time
+                # Set active mode to death screen if distance reaches 0 or goes negative and the left door is open
+                active_mode = ActiveMode.GAME_OVER
+            else: return
+
+
+
+    else:
+        # Check if it's time to change Bonnie's movement
+        if current_time - Chica_movement_timer >= 5000:  # 5000 milliseconds = 5 seconds
+            # Reset the movement timer
+            Chica_movement_timer = current_time
+            print("test")
+
+            # Simulate Bonnie's movement every frame
+            # Adjust distance and active_mode based on AI behavior and game state
+            m_op = random.randint(1, 20)  # Random number for AI behavior
+            if m_op < night_Chica_AI_value:
+                Chica_distance-= 1  # Reduce distance if the AI decides to move closer
+
+        elif Chica_distance == -1:
+            Chica_distance = 6
 
 def reducePowerIfDoorsClosed():
     global power_percentage, left_door_open, middle_went_open, right_door_open
@@ -181,11 +215,24 @@ while True:
             if event.key == pygame.K_q:
                 left_door_dark.fill("#000000")
 
+            elif event.key == pygame.K_e:
+
+                right_door_dark.fill("#000000")
+
 
 
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_e:
+                if Chica_distance == 0 or Chica_distance == 1:
+                    right_door_dark.fill("#f5e942")
+                    power_percentage -= 0.001
+                else:
+                    right_door_dark.fill("#FFFFFF")
+                    power_percentage -= 0.001
+
+
             if event.key == pygame.K_q:
-                if distance == 0 or distance == 1:
+                if bonnie_distance == 0 or bonnie_distance == 1:
                     left_door_dark.fill("#4a1d9b")
                     power_percentage -= 0.001
                 else:
@@ -289,6 +336,7 @@ while True:
         active_mode = ActiveMode.GAME_WON
 
     move_bonnie()
+    move_Chica()
 
 
     if active_mode  == ActiveMode.Vent_cameras:
@@ -418,8 +466,9 @@ while True:
     d("left_door_open: " + str(left_door_open), 3)
     d("midle_vent_open" + str(middle_went_open),4)
     d("right_door_open: " + str(right_door_open), 5)
-    d("Bonnie_distance: " + str(distance), 6)
+    d("Bonnie_distance: " + str(bonnie_distance), 6)
     d("Vent_seen_last: " + str(Vent_seen_last), 7)
+    d("Chica_distance: " + str(Chica_distance), 8)
 
 
     pygame.display.update()
