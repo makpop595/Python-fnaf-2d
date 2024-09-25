@@ -41,6 +41,7 @@ class ActiveMode(Enum):
     GAME_WON = 2
     CAMERAS = 3
     Vent_cameras = 4
+    Control_panel = 5
 
 
 # main state, stage
@@ -189,6 +190,13 @@ went_dark = pygame.Surface((350, 199)).convert_alpha()
 
 right_door_dark = pygame.Surface((390, 700)).convert_alpha()
 
+#control panel
+slider = pygame.image.load("grafigs/Slider.png").convert_alpha()
+slider_scaled = pygame.transform.scale(slider,(300,600))
+button = pygame.image.load("grafigs/Button.png").convert_alpha()
+button_scaled = pygame.transform.scale(button,(200,100))
+
+
 game_ower_screen = pygame.Surface((1800, 900)).convert()
 game_ower_screen.fill("RED")
 
@@ -217,21 +225,28 @@ while True:
                 right_door_dark.fill("#000000")
 
         if event.type == pygame.KEYDOWN:
+
+            if event.key == pygame.K_c and active_mode == ActiveMode.NORMAL:
+                active_mode = ActiveMode.Control_panel
+
+            elif active_mode == ActiveMode.Control_panel and event.key == pygame.K_c:
+                active_mode = ActiveMode.NORMAL
+
             if event.key == pygame.K_e:
                 if Chica_distance == 0 or Chica_distance == 1:
                     right_door_dark.fill("#f5e942")
-                    power_percentage -= 0.001
+                    power_percentage -= 0.004
                 else:
                     right_door_dark.fill("#FFFFFF")
-                    power_percentage -= 0.001
+                    power_percentage -= 0.004
 
             if event.key == pygame.K_q:
                 if bonnie_distance == 0 or bonnie_distance == 1:
                     left_door_dark.fill("#4a1d9b")
-                    power_percentage -= 0.001
+                    power_percentage -= 0.004
                 else:
                     left_door_dark.fill("#FFFFFF")
-                    power_percentage -= 0.001
+                    power_percentage -= 0.004
 
             if active_mode == ActiveMode.CAMERAS or ActiveMode.Vent_cameras:
 
@@ -328,8 +343,21 @@ while True:
     move_bonnie()
     move_Chica()
 
+    if active_mode == ActiveMode.Control_panel:
+        reducePowerIfDoorsClosed()
+        screen.fill("#FFFFFF")
+        screen.blit(slider_scaled, (100, 150))
+        screen.blit(button_scaled, (150, 150))
+        screen.blit(slider_scaled, (500, 150))
+        screen.blit(button_scaled, (550, 150))
+        screen.blit(slider_scaled, (900, 150))
+        screen.blit(button_scaled, (950, 150))
+        screen.blit(slider_scaled, (1300, 150))
+        screen.blit(button_scaled, (1350, 150))
+
     if active_mode == ActiveMode.Vent_cameras:
         reducePowerIfDoorsClosed()
+        power_percentage -= 0.003
 
         if camera_mode == CameraMode.CAM1:
             screen.blit(camera_scrren_cam_1, (0, 0))
@@ -366,6 +394,7 @@ while True:
 
     elif active_mode == ActiveMode.CAMERAS:
         reducePowerIfDoorsClosed()
+        power_percentage -= 0.003
 
         if camera_mode == CameraMode.CAM1:
             screen.blit(camera_scrren_cam_1, (0, 0))
@@ -395,7 +424,6 @@ while True:
         time_display()
 
     elif active_mode == ActiveMode.NORMAL:
-
 
         if left_door_open:
             left_door_y -= 50
