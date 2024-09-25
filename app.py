@@ -346,6 +346,7 @@ while True:
     if active_mode == ActiveMode.Control_panel:
         reducePowerIfDoorsClosed()
         screen.fill("#FFFFFF")
+
         screen.blit(slider_scaled, (100, 150))
         screen.blit(button_scaled, (150, 150))
         screen.blit(slider_scaled, (500, 150))
