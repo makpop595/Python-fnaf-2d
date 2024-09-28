@@ -134,7 +134,7 @@ def move_Chica():
         if current_time - Chica_movement_timer >= 5000:  # 5000 milliseconds = 5 seconds
             # Reset the movement timer
             Chica_movement_timer = current_time
-            print("test")
+
 
             # Simulate Bonnie's movement every frame
             # Adjust distance and active_mode based on AI behavior and game state
@@ -192,10 +192,24 @@ right_door_dark = pygame.Surface((390, 700)).convert_alpha()
 
 #control panel
 slider = pygame.image.load("grafigs/Slider.png").convert_alpha()
-slider_scaled = pygame.transform.scale(slider,(300,600))
+slider_scaled = pygame.transform.scale(slider, (300, 600))
 button = pygame.image.load("grafigs/Button.png").convert_alpha()
-button_scaled = pygame.transform.scale(button,(200,100))
+button_scaled = pygame.transform.scale(button, (200, 100))
+arrow = pygame.image.load("grafigs/PixelArtIcons-20-512.png").convert_alpha()
+arrow_scaled = pygame.transform.scale(arrow, (100, 100))
+slider_position_1 = 1
+button_x_1 = 150
+slider_position_2 = 1
+button_x_2 = 150
+slider_position_3 = 1
+button_x_3 = 150
+slider_position_4 = 1
+button_x_4 = 150
+slider_position_5 = 1
+button_x_6 = 150
 
+selected_slider = 1
+arrow_y = 196
 
 game_ower_screen = pygame.Surface((1800, 900)).convert()
 game_ower_screen.fill("RED")
@@ -225,6 +239,57 @@ while True:
                 right_door_dark.fill("#000000")
 
         if event.type == pygame.KEYDOWN:
+            if active_mode == ActiveMode.Control_panel:
+
+                if event.key == pygame.K_RIGHT:
+                    if selected_slider == 1:
+                        selected_slider = 2
+                    elif selected_slider == 2:
+                        selected_slider = 3
+                    elif selected_slider == 3:
+                        selected_slider = 4
+                if event.key == pygame.K_LEFT:
+                    if selected_slider == 4:
+                        selected_slider = 3
+                    elif selected_slider == 3:
+                        selected_slider = 2
+                    elif selected_slider == 2:
+                        selected_slider = 1
+                if event.key == pygame.K_DOWN:
+
+                    if selected_slider == 1:
+                        if slider_position_1 < 6:
+                            slider_position_1 += 1
+
+                    elif selected_slider == 2:
+                        if slider_position_2 < 6:
+                            slider_position_2 += 1
+
+                    elif selected_slider == 3:
+                        if slider_position_3 < 6:
+                            slider_position_3 += 1
+
+                    elif selected_slider == 4:
+                        if slider_position_4 < 6:
+                            slider_position_4 += 1
+
+                if event.key == pygame.K_UP:
+
+                    if selected_slider == 1:
+                        if slider_position_1 > 1:
+                            slider_position_1 -= 1
+
+                    elif selected_slider == 2:
+                        if slider_position_2 > 1:
+                            slider_position_2 -= 1
+
+                    elif selected_slider == 3:
+                        if slider_position_3 > 1:
+                            slider_position_3 -= 1
+
+                    elif selected_slider == 4:
+                        if slider_position_4 > 1:
+                            slider_position_4 -= 1
 
             if event.key == pygame.K_c and active_mode == ActiveMode.NORMAL:
                 active_mode = ActiveMode.Control_panel
@@ -346,15 +411,72 @@ while True:
     if active_mode == ActiveMode.Control_panel:
         reducePowerIfDoorsClosed()
         screen.fill("#FFFFFF")
+        if selected_slider == 1:
+            if slider_position_1 == 1:
+                button_x_1 = 150
+            elif slider_position_1 == 2:
+                button_x_1 = 300
+            elif slider_position_1 == 3:
+                button_x_1 = 450
+            elif slider_position_1 == 4:
+                button_x_1 = 550
+            elif slider_position_1 == 5:
+                button_x_1 = 700
+
+        if selected_slider == 2:
+            if slider_position_2 == 1:
+                button_x_2 = 150
+            elif slider_position_2 == 2:
+                button_x_2 = 300
+            elif slider_position_2 == 3:
+                button_x_2 = 450
+            elif slider_position_2 == 4:
+                button_x_2 = 550
+            elif slider_position_2 == 5:
+                button_x_2 = 700
+
+        if selected_slider == 3:
+            if slider_position_3 == 1:
+                button_x_3 = 150
+            elif slider_position_3 == 2:
+                button_x_3 = 300
+            elif slider_position_3 == 3:
+                button_x_3 = 450
+            elif slider_position_3 == 4:
+                button_x_3 = 550
+            elif slider_position_3 == 5:
+                button_x_3 = 700
+
+        if selected_slider == 4:
+            if slider_position_4 == 1:
+                button_x_4 = 150
+            elif slider_position_4 == 2:
+                button_x_4 = 300
+            elif slider_position_4 == 3:
+                button_x_4 = 450
+            elif slider_position_4 == 4:
+                button_x_4 = 550
+            elif slider_position_4 == 5:
+                button_x_4 = 700
+
+        if selected_slider == 1:
+            arrow_y = 196
+        if selected_slider == 2:
+            arrow_y = 596
+        if selected_slider == 3:
+            arrow_y = 996
+        if selected_slider == 4:
+            arrow_y = 1396
 
         screen.blit(slider_scaled, (100, 150))
-        screen.blit(button_scaled, (150, 150))
+        screen.blit(button_scaled, (150, button_x_1))
         screen.blit(slider_scaled, (500, 150))
-        screen.blit(button_scaled, (550, 150))
+        screen.blit(button_scaled, (550, button_x_2))
         screen.blit(slider_scaled, (900, 150))
-        screen.blit(button_scaled, (950, 150))
+        screen.blit(button_scaled, (950, button_x_3))
         screen.blit(slider_scaled, (1300, 150))
-        screen.blit(button_scaled, (1350, 150))
+        screen.blit(button_scaled, (1350, button_x_4))
+        screen.blit(arrow_scaled, (arrow_y, 750))
 
     if active_mode == ActiveMode.Vent_cameras:
         reducePowerIfDoorsClosed()
@@ -490,6 +612,8 @@ while True:
     d("Vent_seen_last: " + str(Vent_seen_last), 7)
     d("Chica_distance: " + str(Chica_distance), 8)
     d("Time_specific: " + str(time1), 9)
+    d("selected_slider: " + str(selected_slider), 10)
+    d("slider_position_4: " + str(slider_position_4), 11)
 
     pygame.display.update()
     clock.tick(60)
